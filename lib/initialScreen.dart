@@ -1,26 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:harrowsithivinayagar/OnboardingScreen.dart';
-import 'package:harrowsithivinayagar/mainScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:harrowsithivinayagar/loginScreen.dart';
+import 'package:harrowsithivinayagar/mainScreen.dart';
+import 'package:harrowsithivinayagar/onboardingScreen.dart';
 
 class InitialScreen extends StatelessWidget {
   const InitialScreen({super.key});
 
   Future<bool> _checkOnboardingStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('onboardingComplete') ?? false;
+    bool onboardingComplete = prefs.getBool('onboardingComplete') ?? false;
+    print("Onboarding Complete: $onboardingComplete");
+    return onboardingComplete;
+  }
+
+  Future<bool> _checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool loggedIn = prefs.getBool('loggedIn') ?? false;
+    print("Logged In: $loggedIn");
+    return loggedIn;
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
       future: _checkOnboardingStatus(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+      builder: (context, onboardingSnapshot) {
+        if (onboardingSnapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (snapshot.hasData && snapshot.data == true) {
-          return const MainScreen();
+        if (onboardingSnapshot.data == true) {
+          return FutureBuilder<bool>(
+            future: _checkLoginStatus(),
+            builder: (context, loginSnapshot) {
+              if (loginSnapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (loginSnapshot.data == true) {
+                return const MainScreen();
+              } else {
+                return const LoginScreen();
+              }
+            },
+          );
         } else {
           return const OnboardingScreen();
         }

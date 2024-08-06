@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harrowsithivinayagar/initialScreen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:harrowsithivinayagar/MainScreen.dart';
@@ -72,7 +73,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   await _completeOnboarding();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const MainScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const InitialScreen()),
                   );
                 },
                 child: const Text('Get Started'),

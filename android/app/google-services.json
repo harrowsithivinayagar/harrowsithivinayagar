@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "511181393531",
+    "project_id": "harrowsithivinayagar-2c4fc",
+    "storage_bucket": "harrowsithivinayagar-2c4fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511181393531:android:b5e4ed8655d74904fe1cde",
+        "android_client_info": {
+          "package_name": "com.temple.harrowsithivinayagar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbULDM8fQKfyXHhHe6rv0hVLcCydB1Ztk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,29 @@
+name: harrowsithivinayagar
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  smooth_page_indicator: ^1.0.0+2
+  shared_preferences: ^2.0.6
+  url_launcher: ^6.0.20
+  cached_network_image: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/ganesha.png
+    - assets/temple_welcome.png
+    - assets/temple_services.png
+    - assets/temple_events.png
+    - assets/placeholder.png

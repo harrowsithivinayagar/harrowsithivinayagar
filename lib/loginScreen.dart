@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,8 +16,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   Future<void> _signInWithGoogle() async {
     try {
+      print("Starting Google Sign-In process...");
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser != null) {
+        print("Google Sign-In successful, user: ${googleUser.email}");
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
         final AuthCredential credential = GoogleAuthProvider.credential(
@@ -24,19 +27,47 @@ class _LoginScreenState extends State<LoginScreen> {
           idToken: googleAuth.idToken,
         );
 
+        print("Authenticating with Firebase...");
         UserCredential userCredential =
             await FirebaseAuth.instance.signInWithCredential(credential);
 
         if (userCredential.user != null) {
+          print(
+              "Firebase Authentication successful, user: ${userCredential.user!.email}");
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setBool('loggedIn', true);
-          print("User logged in: ${userCredential.user!.email}");
 
+          DocumentReference userDocRef = FirebaseFirestore.instance
+              .collection('users')
+              .doc(userCredential.user!.uid);
+          DocumentSnapshot userDoc = await userDocRef.get();
+
+          if (!userDoc.exists) {
+            print(
+                "User does not exist in Firestore, creating new user document...");
+            await userDocRef.set({
+              'email': userCredential.user!.email,
+              'role': "user",
+            });
+          }
+
+          String role = userDoc.exists
+              ? userDoc.get('role')
+              : (await userDocRef.get()).get('role');
+
+          print("User role: $role");
+          await prefs.setString('role', role);
+
+          print("Navigating to MainScreen...");
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => MainScreen()),
+            MaterialPageRoute(builder: (context) => const MainScreen()),
           );
+        } else {
+          print("Firebase Authentication failed.");
         }
+      } else {
+        print("Google Sign-In cancelled by user.");
       }
     } catch (e) {
       print("Error during Google Sign-In: $e");

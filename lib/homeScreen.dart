@@ -7,6 +7,8 @@ import 'event_service.dart';
 import 'event_model.dart';
 
 class HomeTab extends StatefulWidget {
+  const HomeTab({super.key});
+
   @override
   // ignore: library_private_types_in_public_api
   _HomeTabState createState() => _HomeTabState();
@@ -23,6 +25,7 @@ class _HomeTabState extends State<HomeTab> {
 
   Future<void> _loadEvents() async {
     await EventService().loadEvents();
+    await EventService().scheduleNotifications(); // Schedule notifications
     setState(() {
       final now = DateTime.now();
       _upcomingEvents = EventService()
@@ -99,13 +102,17 @@ class _HomeTabState extends State<HomeTab> {
                     color: Colors.orange,
                   ),
                 ),
-                ..._upcomingEvents.sublist(0, 2).map((event) {
-                  return ListTile(
-                    title: Text(event.event),
-                    subtitle: Text(
-                        '${event.date.day}-${event.date.month}-${event.date.year} - ${event.day}'),
-                  );
-                }),
+                if (_upcomingEvents.isEmpty)
+                  const Text('No upcoming events',
+                      style: TextStyle(fontSize: 16.0, color: Colors.black))
+                else
+                  ..._upcomingEvents.sublist(0, 2).map((event) {
+                    return ListTile(
+                      title: Text(event.event),
+                      subtitle: Text(
+                          '${event.date.day}-${event.date.month}-${event.date.year} - ${event.day}'),
+                    );
+                  }),
                 const SizedBox(height: 20),
                 const Text(
                   'Contact Us',

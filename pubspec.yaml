@@ -22,6 +22,7 @@ dependencies:
   firebase_messaging: ^15.0.4
   cloud_firestore: ^5.2.1
   firebase_remote_config: ^5.0.4
+  table_calendar: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -36,3 +37,4 @@ flutter:
     - assets/temple_services.png
     - assets/temple_events.png
     - assets/placeholder.png
+    - assets/special_days.json

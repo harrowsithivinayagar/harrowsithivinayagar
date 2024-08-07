@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:harrowsithivinayagar/analytics_service.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'analytics_service.dart';
+import 'event_service.dart';
 
-class HomeTab extends StatelessWidget {
-  const HomeTab({super.key});
+class HomeTab extends StatefulWidget {
+  @override
+  _HomeTabState createState() => _HomeTabState();
+}
+
+class _HomeTabState extends State<HomeTab> {
+  @override
+  void initState() {
+    super.initState();
+    _loadEvents();
+  }
+
+  Future<void> _loadEvents() async {
+    await EventService().loadEvents();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Log the screen view
-    AnalyticsService().setCurrentScreen(screenName: 'HomeTab');
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,10 +185,6 @@ class HomeTab extends StatelessWidget {
                             'https://www.facebook.com/sithi.vinayagar.58');
                         if (await canLaunchUrl(url)) {
                           await launchUrl(url);
-                          // Log the event
-                          AnalyticsService().logCustomEvent(
-                              eventName: 'visit_facebook',
-                              parameters: {'url': url.toString()});
                         } else {
                           throw 'Could not launch $url';
                         }

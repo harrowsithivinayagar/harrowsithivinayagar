@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'analytics_service.dart';
 
 class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
+
   @override
   Widget build(BuildContext context) {
+    // Log the screen view
+    AnalyticsService().setCurrentScreen(screenName: 'HomeTab');
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +84,6 @@ class HomeTab extends StatelessWidget {
                   subtitle: Text(
                       'November 4 - Celebrate the festival of lights with us'),
                 ),
-                // Add more events as needed
                 const SizedBox(height: 20),
                 const Text(
                   'Contact Us',
@@ -96,6 +101,10 @@ class HomeTab extends StatelessWidget {
                         'https://www.google.com/maps?daddr=2D+Nibthwaite+Road,+Harrow,+HA1+1TA');
                     if (await canLaunchUrl(url)) {
                       await launchUrl(url);
+                      // Log the event
+                      AnalyticsService().logCustomEvent(
+                          eventName: 'open_map',
+                          parameters: {'location': 'temple_address'});
                     } else {
                       throw 'Could not launch $url';
                     }
@@ -108,6 +117,10 @@ class HomeTab extends StatelessWidget {
                     final Uri url = Uri.parse('tel:+442084275428');
                     if (await canLaunchUrl(url)) {
                       await launchUrl(url);
+                      // Log the event
+                      AnalyticsService().logCustomEvent(
+                          eventName: 'call_phone',
+                          parameters: {'phone': '+442084275428'});
                     } else {
                       throw 'Could not launch $url';
                     }
@@ -121,6 +134,12 @@ class HomeTab extends StatelessWidget {
                         Uri.parse('mailto:sithivinayagarharrow@gmail.com');
                     if (await canLaunchUrl(url)) {
                       await launchUrl(url);
+                      // Log the event
+                      AnalyticsService().logCustomEvent(
+                          eventName: 'send_email',
+                          parameters: {
+                            'email': 'sithivinayagarharrow@gmail.com'
+                          });
                     } else {
                       throw 'Could not launch $url';
                     }
@@ -134,6 +153,12 @@ class HomeTab extends StatelessWidget {
                         Uri.parse('https://harrowsithivinayagar.com');
                     if (await canLaunchUrl(url)) {
                       await launchUrl(url);
+                      // Log the event
+                      AnalyticsService().logCustomEvent(
+                          eventName: 'visit_website',
+                          parameters: {
+                            'url': 'https://harrowsithivinayagar.com'
+                          });
                     } else {
                       throw 'Could not launch $url';
                     }
@@ -149,6 +174,10 @@ class HomeTab extends StatelessWidget {
                             'https://www.facebook.com/sithi.vinayagar.58');
                         if (await canLaunchUrl(url)) {
                           await launchUrl(url);
+                          // Log the event
+                          AnalyticsService().logCustomEvent(
+                              eventName: 'visit_facebook',
+                              parameters: {'url': url.toString()});
                         } else {
                           throw 'Could not launch $url';
                         }
@@ -161,6 +190,10 @@ class HomeTab extends StatelessWidget {
                             'https://www.youtube.com/channel/UCyThGcRQbt5uPvHw-u9GFOA');
                         if (await canLaunchUrl(url)) {
                           await launchUrl(url);
+                          // Log the event
+                          AnalyticsService().logCustomEvent(
+                              eventName: 'visit_youtube',
+                              parameters: {'url': url.toString()});
                         } else {
                           throw 'Could not launch $url';
                         }
@@ -172,6 +205,10 @@ class HomeTab extends StatelessWidget {
                         final Uri url = Uri.parse('https://wa.me/442084275428');
                         if (await canLaunchUrl(url)) {
                           await launchUrl(url);
+                          // Log the event
+                          AnalyticsService().logCustomEvent(
+                              eventName: 'send_whatsapp_message',
+                              parameters: {'phone': '+442084275428'});
                         } else {
                           throw 'Could not launch $url';
                         }

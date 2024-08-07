@@ -47,9 +47,23 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: _signInWithGoogle,
-          child: const Text('Sign in with Google'),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                'assets/ganesha.png',
+                height: 200.0,
+                width: 200.0,
+              ),
+              const SizedBox(height: 40.0),
+              ElevatedButton(
+                onPressed: _signInWithGoogle,
+                child: const Text('Sign in with Google'),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,14 +1,20 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:harrowsithivinayagar/analytics_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'event_service.dart';
+import 'event_model.dart';
 
 class HomeTab extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _HomeTabState createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> {
+  late List<Event> _upcomingEvents = [];
+
   @override
   void initState() {
     super.initState();
@@ -17,6 +23,14 @@ class _HomeTabState extends State<HomeTab> {
 
   Future<void> _loadEvents() async {
     await EventService().loadEvents();
+    setState(() {
+      final now = DateTime.now();
+      _upcomingEvents = EventService()
+          .events
+          .where((event) => event.date.isAfter(now))
+          .toList()
+        ..sort((a, b) => a.date.compareTo(b.date));
+    });
   }
 
   @override
@@ -85,16 +99,13 @@ class _HomeTabState extends State<HomeTab> {
                     color: Colors.orange,
                   ),
                 ),
-                const ListTile(
-                  title: Text('Navarathiri Viratham begins'),
-                  subtitle:
-                      Text('October 7 - First day of Navarathiri Viratham'),
-                ),
-                const ListTile(
-                  title: Text('Diwali Celebration'),
-                  subtitle: Text(
-                      'November 4 - Celebrate the festival of lights with us'),
-                ),
+                ..._upcomingEvents.sublist(0, 2).map((event) {
+                  return ListTile(
+                    title: Text(event.event),
+                    subtitle: Text(
+                        '${event.date.day}-${event.date.month}-${event.date.year} - ${event.day}'),
+                  );
+                }),
                 const SizedBox(height: 20),
                 const Text(
                   'Contact Us',
@@ -191,7 +202,7 @@ class _HomeTabState extends State<HomeTab> {
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.video_library, color: Colors.red),
+                      icon: const Icon(Icons.video_library, color: Colors.red),
                       onPressed: () async {
                         final Uri url = Uri.parse(
                             'https://www.youtube.com/channel/UCyThGcRQbt5uPvHw-u9GFOA');
@@ -207,7 +218,7 @@ class _HomeTabState extends State<HomeTab> {
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.message, color: Colors.green),
+                      icon: const Icon(Icons.message, color: Colors.green),
                       onPressed: () async {
                         final Uri url = Uri.parse('https://wa.me/442084275428');
                         if (await canLaunchUrl(url)) {

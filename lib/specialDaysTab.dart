@@ -17,12 +17,14 @@ class _SpecialDaysTabState extends State<SpecialDaysTab> {
   late Map<DateTime, List<Event>> _events;
   late List<Event> _selectedMonthEvents;
   DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
 
   @override
   void initState() {
     super.initState();
     _events = {};
     _selectedMonthEvents = [];
+    _selectedDay = _focusedDay;
     _loadEvents();
   }
 
@@ -92,8 +94,10 @@ class _SpecialDaysTabState extends State<SpecialDaysTab> {
               }
               return null;
             },
-            defaultBuilder: (context, date, focusedDay) {
-              if (_events.containsKey(date)) {
+            defaultBuilder: (context, date, _) {
+              final cleanDate = DateTime(date.year, date.month, date.day);
+              if (_events.containsKey(cleanDate)) {
+                print("defaultBuilder called inside if");
                 return Container(
                   margin: const EdgeInsets.all(6.0),
                   alignment: Alignment.center,
@@ -106,9 +110,8 @@ class _SpecialDaysTabState extends State<SpecialDaysTab> {
                     style: const TextStyle(color: Colors.white),
                   ),
                 );
-              } else {
-                return null;
               }
+              return null;
             },
           ),
           eventLoader: _getEventsForDay,

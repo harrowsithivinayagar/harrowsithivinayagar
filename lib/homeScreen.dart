@@ -76,7 +76,8 @@ class _HomeTabState extends State<HomeTab> {
                 const SizedBox(height: 10),
                 const Text(
                   'Temple Opening Hours\n'
-                  'Daily: 9.00 a.m. to 2.00 p.m. and 5.00 p.m. to 9.00 p.m.',
+                  'Mon, Wed, Thu, Sat, Sun: \n9.00 a.m. to 2.00 p.m. and 5.00 p.m. to 9.00 p.m.\n'
+                  'Tue, Fri: \n8.00 a.m. to 2.00 p.m. and 5.00 p.m. to 8.00 p.m.\n',
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black,
@@ -85,7 +86,7 @@ class _HomeTabState extends State<HomeTab> {
                 const SizedBox(height: 10),
                 const Text(
                   'Pooja Times\n'
-                  'Morning: 9.00 a.m.\n'
+                  'Morning: Mon, Wed, Thu, Sat, Sun - 9.00 a.m.\nTue, Fri: 8.00 a.m.\n'
                   'Noon: 12 p.m.\n'
                   'Night: 7.30 p.m.',
                   style: TextStyle(

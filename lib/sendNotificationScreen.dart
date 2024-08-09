@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:harrowsithivinayagar/loggingService.dart';
 
 class SendNotificationScreen extends StatefulWidget {
   const SendNotificationScreen({super.key});
@@ -53,7 +54,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
         },
       );
     } catch (e) {
-      print('Failed to send notification: $e');
+      LoggingService.instance.logError('Failed to send notification: $e');
     }
   }
 

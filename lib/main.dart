@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -5,8 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:harrowsithivinayagar/analytics_service.dart';
 import 'package:harrowsithivinayagar/initialScreen.dart';
+import 'package:harrowsithivinayagar/loggingService.dart';
+import 'package:newrelic_mobile/config.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:newrelic_mobile/newrelic_mobile.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -48,9 +53,30 @@ void main() async {
       },
     );
   } catch (e) {
-    print("Error initializing Firebase: $e");
+    LoggingService.instance.logError("Error initializing Firebase: $e");
   }
-  runApp(MyApp());
+  var appToken = "";
+  if (Platform.isIOS) {
+    appToken = 'eu01xxcf835f59c648a12ed79f1289fe58f1b499af-NRMA';
+  } else if (Platform.isAndroid) {
+    appToken = 'eu01xx688f84454c5ba2f4aaf05b0035222c73f3ca-NRMA';
+  }
+  Config config = Config(
+      accessToken: appToken,
+      analyticsEventEnabled: true,
+      webViewInstrumentation: true,
+      networkErrorRequestEnabled: true,
+      networkRequestEnabled: true,
+      crashReportingEnabled: true,
+      interactionTracingEnabled: true,
+      httpResponseBodyCaptureEnabled: true,
+      loggingEnabled: true,
+      printStatementAsEventsEnabled: true,
+      httpInstrumentationEnabled: true);
+
+  NewrelicMobile.instance.start(config, () {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {

@@ -10,14 +10,12 @@ class InitialScreen extends StatelessWidget {
   Future<bool> _checkOnboardingStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool onboardingComplete = prefs.getBool('onboardingComplete') ?? false;
-    print("Onboarding Complete: $onboardingComplete");
     return onboardingComplete;
   }
 
   Future<bool> _checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool loggedIn = prefs.getBool('loggedIn') ?? false;
-    print("Logged In: $loggedIn");
     return loggedIn;
   }
 

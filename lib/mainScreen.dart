@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:harrowsithivinayagar/loggingService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'homeScreen.dart';
 import 'moreTab.dart';
@@ -36,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
         _isLoading = false;
       });
     }).catchError((error) {
-      print('Error fetching role: $error');
+      LoggingService.instance.logError('Error fetching role: $error');
     });
   }
 

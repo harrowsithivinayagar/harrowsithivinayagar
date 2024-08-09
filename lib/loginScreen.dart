@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:harrowsithivinayagar/mainScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +15,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
   Future<void> _signInWithGoogle() async {
     try {
       print("Starting Google Sign-In process...");
@@ -37,6 +40,9 @@ class _LoginScreenState extends State<LoginScreen> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setBool('loggedIn', true);
 
+          String? fcmToken = await _firebaseMessaging.getToken();
+          print("FCM Token: $fcmToken");
+
           DocumentReference userDocRef = FirebaseFirestore.instance
               .collection('users')
               .doc(userCredential.user!.uid);
@@ -48,7 +54,10 @@ class _LoginScreenState extends State<LoginScreen> {
             await userDocRef.set({
               'email': userCredential.user!.email,
               'role': "user",
+              'token': fcmToken,
             });
+          } else {
+            await userDocRef.update({'token': fcmToken});
           }
 
           String role = userDoc.exists

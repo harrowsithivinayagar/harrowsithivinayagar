@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 import 'event_model.dart';
@@ -29,6 +30,7 @@ class EventService {
   List<Event> get events => _events;
 
   Future<void> scheduleNotifications() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     for (var event in _events) {
       final scheduledDate = DateTime(
         event.date.year,
@@ -38,7 +40,13 @@ class EventService {
         0,
       );
       if (scheduledDate.isAfter(DateTime.now())) {
-        await _scheduleNotification(event, scheduledDate);
+        String notificationKey = 'notification_${event.uniqueId}';
+        bool isScheduled = prefs.getBool(notificationKey) ?? false;
+
+        if (!isScheduled) {
+          await _scheduleNotification(event, scheduledDate);
+          await prefs.setBool(notificationKey, true);
+        }
       }
     }
   }

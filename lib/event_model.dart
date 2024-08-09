@@ -18,4 +18,6 @@ class Event {
       day: json['day'],
     );
   }
+
+  String get uniqueId => '$date-$event-$day'.hashCode.toString();
 }

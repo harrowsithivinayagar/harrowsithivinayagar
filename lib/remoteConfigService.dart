@@ -16,14 +16,15 @@ class RemoteConfigService {
     );
 
     await remoteConfig.setDefaults(<String, dynamic>{
-      'requiredMinimumVersion': 1, // Default minimum version
+      'requiredMinimumVersion': "0.0.0", // Default minimum version
     });
 
     await remoteConfig.fetchAndActivate();
     return RemoteConfigService._internal(remoteConfig);
   }
 
-  int getRequiredMinimumVersion() {
-    return _remoteConfig.getInt('requiredMinimumVersion');
+  String getRequiredMinimumVersion() {
+    var version = _remoteConfig.getString('requiredMinimumVersion');
+    return version;
   }
 }

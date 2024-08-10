@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:harrowsithivinayagar/loginScreen.dart';
-import 'package:harrowsithivinayagar/mainScreen.dart';
-import 'package:harrowsithivinayagar/onboardingScreen.dart';
 
 class InitialScreen extends StatelessWidget {
   const InitialScreen({super.key});
@@ -29,15 +26,21 @@ class InitialScreen extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
-              if (snapshot.hasData) {
-                return const MainScreen();
-              } else {
-                return const LoginScreen();
-              }
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (snapshot.hasData) {
+                  Navigator.pushReplacementNamed(context, '/main');
+                } else {
+                  Navigator.pushReplacementNamed(context, '/login');
+                }
+              });
+              return Container(); // Return an empty container while navigating
             },
           );
         } else {
-          return const OnboardingScreen();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pushReplacementNamed(context, '/onboarding');
+          });
+          return Container(); // Return an empty container while navigating
         }
       },
     );

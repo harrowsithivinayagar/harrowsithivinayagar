@@ -5,10 +5,14 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:harrowsithivinayagar/OnboardingScreen.dart';
 import 'package:harrowsithivinayagar/analytics_service.dart';
 import 'package:harrowsithivinayagar/initialScreen.dart';
 import 'package:harrowsithivinayagar/loggingService.dart';
+import 'package:harrowsithivinayagar/loginScreen.dart';
+import 'package:harrowsithivinayagar/mainScreen.dart';
 import 'package:newrelic_mobile/config.dart';
+import 'package:permission_handler/permission_handler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:newrelic_mobile/newrelic_mobile.dart';
@@ -18,6 +22,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _requestPermissions();
   try {
     await Firebase.initializeApp();
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
@@ -75,21 +80,41 @@ void main() async {
       httpInstrumentationEnabled: true);
 
   NewrelicMobile.instance.start(config, () {
-    runApp(MyApp());
+    runApp(const MyApp());
   });
 }
 
+Future<void> _requestPermissions() async {
+  var status = await Permission.notification.status;
+  if (status.isDenied) {
+    await Permission.notification.request();
+  }
+}
+
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Harrowsithi Vinayagar Temple',
-        theme: ThemeData(
-          primarySwatch: Colors.orange,
+      title: 'Harrowsithi Vinayagar Temple',
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(
+            color: Colors.white, // Change this to your desired color
+          ),
         ),
-        home: const InitialScreen(),
-        navigatorObservers: [
-          AnalyticsService().getAnalyticsObserver(),
-        ]);
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) =>
+            const InitialScreen(), // Change this to your initial screen
+        '/login': (context) => const LoginScreen(),
+        '/main': (context) => const MainScreen(),
+        '/onboarding': (context) => const OnboardingScreen(),
+        // Add other routes here
+      },
+    );
   }
 }

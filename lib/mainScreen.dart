@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:harrowsithivinayagar/RemoteConfigService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:win32/win32.dart';
 import 'homeScreen.dart';
 import 'moreTab.dart';
 import 'specialDaysTab.dart';
@@ -37,18 +38,19 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _initializeRemoteConfig();
     _checkRole().then((String? value) {
-      setState(() {
-        role = value ?? 'user';
-        populateList();
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          role = value ?? 'user';
+          populateList();
+          _isLoading = false;
+        });
+      }
     }).catchError((error) {
       LoggingService.instance.logError('Error fetching role: $error');
     });
   }
 
   Future<void> _initializeRemoteConfig() async {
-    print("_initializeRemoteConfig");
     final remoteConfigService = await RemoteConfigService.create();
     await _checkForUpdate(remoteConfigService.getRequiredMinimumVersion());
   }
@@ -62,10 +64,12 @@ class _MainScreenState extends State<MainScreen> {
         _getExtendedVersionNumber(requiredMinimumVersion);
 
     if (currentVersionNumber < requiredVersionNumber) {
-      setState(() {
-        _isUpdateRequired = true;
-      });
-      _showUpdateDialog();
+      if (mounted) {
+        setState(() {
+          _isUpdateRequired = true;
+          _showUpdateDialog();
+        });
+      }
     }
   }
 
@@ -76,38 +80,42 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _showUpdateDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false, // Prevent back button dismissal
-          child: AlertDialog(
-            title: const Text('Update Required'),
-            content: const Text(
-                'A new version of the app is available. Please update to continue.'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Update'),
-                onPressed: () async {
-                  String url = '';
-                  if (Platform.isAndroid) {
-                    url =
-                        'https://play.google.com/store/apps/details?id=com.example.harrowsithivinayagar';
-                  } else if (Platform.isIOS) {
-                    url =
-                        'https://apps.apple.com/app/idYOUR_APP_ID'; // Replace with your app's URL on the App Store
-                  }
-                  if (await canLaunchUrl(Uri.parse(url))) {
-                    await launchUrl(Uri.parse(url));
-                  }
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
+    if (!mounted) return; // Return early if not mounted
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return; // Check again to ensure still mounted
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async => false, // Prevent back button dismissal
+            child: AlertDialog(
+              title: const Text('Update Required'),
+              content: const Text(
+                  'A new version of the app is available. Please update to continue.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Update'),
+                  onPressed: () async {
+                    String url = '';
+                    if (Platform.isAndroid) {
+                      url =
+                          'https://play.google.com/store/apps/details?id=com.example.harrowsithivinayagar';
+                    } else if (Platform.isIOS) {
+                      url =
+                          'https://apps.apple.com/app/idYOUR_APP_ID'; // Replace with your app's URL on the App Store
+                    }
+                    if (await canLaunchUrl(Uri.parse(url))) {
+                      await launchUrl(Uri.parse(url));
+                    }
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    });
   }
 
   void populateList() {
@@ -142,9 +150,11 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (mounted) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -168,6 +178,22 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+            onPressed: () async {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              await prefs.remove('role');
+              if (context.mounted) {
+                Navigator.pushReplacementNamed(context, '/login');
+              }
+            },
+          ),
+        ],
         title: const Text(
           'Sri Sithi Vinayagar Temple',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

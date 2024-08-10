@@ -12,7 +12,28 @@
           "package_name": "com.temple.harrowsithivinayagar"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "511181393531-90mkpu0ojskkdika8apm0fc4pj25h3ci.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.temple.harrowsithivinayagar",
+            "certificate_hash": "101d5d79d0c8ba0e13d449f5e7441bd6332475da"
+          }
+        },
+        {
+          "client_id": "511181393531-nom7f9a0qpuo7pktagtf964ociq1p5j0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.temple.harrowsithivinayagar",
+            "certificate_hash": "23405a904316c28fdd76a69ab80254dff74a34fb"
+          }
+        },
+        {
+          "client_id": "511181393531-ln4m1nluls1lk6045oc63v1k9kfmhkfc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDbULDM8fQKfyXHhHe6rv0hVLcCydB1Ztk"
@@ -20,7 +41,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511181393531-ln4m1nluls1lk6045oc63v1k9kfmhkfc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "511181393531-116fbpqgv932h36k57ijk5hgmrhrdepn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.temple.harrowsithivinayagar"
+              }
+            }
+          ]
         }
       }
     }

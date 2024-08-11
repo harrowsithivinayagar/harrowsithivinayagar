@@ -21,7 +21,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.example.harrowsithivinayagar"
+    namespace "com.temple.harrowsithivinayagar"
     compileSdk 34
     ndkVersion "25.1.8937393"
 

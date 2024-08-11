@@ -1,4 +1,4 @@
-package com.example.harrowsithivinayagar
+package com.temple.harrowsithivinayagar
 
 import io.flutter.embedding.android.FlutterActivity
 

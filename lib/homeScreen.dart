@@ -194,16 +194,8 @@ class _HomeTabState extends State<HomeTab> {
                     onTap: () async {
                       final Uri url =
                           Uri.parse('https://harrowsithivinayagar.com');
-                      if (await canLaunchUrl(url)) {
-                        await launchUrl(url);
-                        // Log the event
-                        AnalyticsService().logCustomEvent(
-                            eventName: 'visit_website',
-                            parameters: {
-                              'url': 'https://harrowsithivinayagar.com'
-                            });
-                      } else {
-                        throw 'Could not launch $url';
+                      if (!await launchUrl(url)) {
+                        throw Exception('Could not launch $url');
                       }
                     },
                   ),

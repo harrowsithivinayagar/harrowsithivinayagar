@@ -207,10 +207,8 @@ class _HomeTabState extends State<HomeTab> {
                         onPressed: () async {
                           final Uri url = Uri.parse(
                               'https://www.facebook.com/sithi.vinayagar.58');
-                          if (await canLaunchUrl(url)) {
-                            await launchUrl(url);
-                          } else {
-                            throw 'Could not launch $url';
+                          if (!await launchUrl(url)) {
+                            throw Exception('Could not launch $url');
                           }
                         },
                       ),
@@ -220,14 +218,8 @@ class _HomeTabState extends State<HomeTab> {
                         onPressed: () async {
                           final Uri url = Uri.parse(
                               'https://www.youtube.com/channel/UCyThGcRQbt5uPvHw-u9GFOA');
-                          if (await canLaunchUrl(url)) {
-                            await launchUrl(url);
-                            // Log the event
-                            AnalyticsService().logCustomEvent(
-                                eventName: 'visit_youtube',
-                                parameters: {'url': url.toString()});
-                          } else {
-                            throw 'Could not launch $url';
+                          if (!await launchUrl(url)) {
+                            throw Exception('Could not launch $url');
                           }
                         },
                       ),
@@ -236,14 +228,8 @@ class _HomeTabState extends State<HomeTab> {
                         onPressed: () async {
                           final Uri url =
                               Uri.parse('https://wa.me/442084275428');
-                          if (await canLaunchUrl(url)) {
-                            await launchUrl(url);
-                            // Log the event
-                            AnalyticsService().logCustomEvent(
-                                eventName: 'send_whatsapp_message',
-                                parameters: {'phone': '+442084275428'});
-                          } else {
-                            throw 'Could not launch $url';
+                          if (!await launchUrl(url)) {
+                            throw Exception('Could not launch $url');
                           }
                         },
                       ),

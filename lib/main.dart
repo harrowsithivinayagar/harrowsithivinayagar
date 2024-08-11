@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:harrowsithivinayagar/OnboardingScreen.dart';
-import 'package:harrowsithivinayagar/analytics_service.dart';
 import 'package:harrowsithivinayagar/initialScreen.dart';
 import 'package:harrowsithivinayagar/loggingService.dart';
 import 'package:harrowsithivinayagar/loginScreen.dart';

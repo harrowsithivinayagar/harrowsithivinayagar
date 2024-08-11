@@ -9,6 +9,7 @@ class SendNotificationScreen extends StatefulWidget {
   const SendNotificationScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SendNotificationScreenState createState() => _SendNotificationScreenState();
 }
 
@@ -28,14 +29,10 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
       try {
         // Fetch all user tokens from Firestore
         final users = await _firestore.collection('users').get();
-        print("users: $users");
-
         final tokens = users.docs
             .map((doc) => doc.data().containsKey('token') ? doc['token'] : null)
             .where((token) => token != null && token.isNotEmpty)
             .toList();
-        print("tokens: $tokens");
-
         if (tokens.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('No valid user tokens found')),
@@ -71,11 +68,8 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
       String token, String title, String message) async {
     final serviceAccount = json.decode(await DefaultAssetBundle.of(context)
         .loadString('assets/service_account.json'));
-    print("serviceAccount: $serviceAccount");
-
     final auth.ServiceAccountCredentials credentials =
         auth.ServiceAccountCredentials.fromJson(serviceAccount);
-    print("credentials: $credentials");
     final List<String> scopes = [
       'https://www.googleapis.com/auth/firebase.messaging'
     ];
@@ -102,15 +96,12 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
       );
 
       if (response.statusCode != 200) {
-        print('Failed to send notification: ${response.body}');
         LoggingService.instance
             .logError('Failed to send notification: ${response.body}');
       } else {
-        print("Notification sent successfully");
         LoggingService.instance.logInfo('Notification sent successfully');
       }
     } catch (e) {
-      print('Failed to send notification: $e');
       LoggingService.instance.logError('Failed to send notification: $e');
     }
   }

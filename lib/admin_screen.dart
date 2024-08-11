@@ -3,9 +3,10 @@ import 'package:harrowsithivinayagar/sendNotificationScreen.dart';
 import 'package:harrowsithivinayagar/showUsersScreen.dart';
 
 class AdminScreen extends StatefulWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+  const AdminScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AdminScreenState createState() => _AdminScreenState();
 }
 

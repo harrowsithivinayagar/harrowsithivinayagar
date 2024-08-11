@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:harrowsithivinayagar/analytics_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'event_service.dart';
@@ -37,17 +38,13 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   void _sendFeedback() async {
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: 'shriharrowsithivinayagar@gmail.com',
-      queryParameters: {'subject': 'Feedback for Harrowsithi Vinayagar Temple'},
+    final Email email = Email(
+      subject: 'App Feedback',
+      recipients: ['shriharrowsithivinayagar@gmail.com'],
+      isHTML: false,
     );
 
-    if (await canLaunchUrl(emailLaunchUri)) {
-      await launchUrl(emailLaunchUri);
-    } else {
-      throw 'Could not launch $emailLaunchUri';
-    }
+    await FlutterEmailSender.send(email);
   }
 
   @override

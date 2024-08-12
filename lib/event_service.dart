@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:harrowsithivinayagar/local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
@@ -44,45 +45,11 @@ class EventService {
         bool isScheduled = prefs.getBool(notificationKey) ?? false;
 
         if (!isScheduled) {
-          await _scheduleNotification(event, scheduledDate);
+          await LocalNotifications.instance
+              .scheduleNotification(event, scheduledDate);
           await prefs.setBool(notificationKey, true);
         }
       }
     }
-  }
-
-  Future<void> _scheduleNotification(
-      Event event, DateTime scheduledDate) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'event_channel_id',
-      'Event Notifications',
-      channelDescription: 'Notifications for upcoming events',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-
-    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
-        DarwinNotificationDetails();
-
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-
-    final tz.TZDateTime tzScheduledDate = tz.TZDateTime.from(
-      scheduledDate,
-      tz.local,
-    );
-
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      event.hashCode,
-      'Upcoming Event',
-      '${event.event} is today!',
-      tzScheduledDate,
-      platformChannelSpecifics,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
   }
 }

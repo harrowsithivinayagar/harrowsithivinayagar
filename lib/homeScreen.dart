@@ -27,6 +27,7 @@ class _HomeTabState extends State<HomeTab> {
   Future<void> _loadEvents() async {
     await EventService().loadEvents();
     await EventService().scheduleNotifications(); // Schedule notifications
+
     setState(() {
       final now = DateTime.now();
       _upcomingEvents = EventService()

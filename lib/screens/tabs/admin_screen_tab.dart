@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:harrowsithivinayagar/sendNotificationScreen.dart';
-import 'package:harrowsithivinayagar/showUsersScreen.dart';
+import 'package:harrowsithivinayagar/screens/admin/send_notification_screen.dart';
+import 'package:harrowsithivinayagar/screens/admin/show_users_screen.dart';
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({super.key});

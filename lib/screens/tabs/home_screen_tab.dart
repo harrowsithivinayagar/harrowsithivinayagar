@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:harrowsithivinayagar/analytics_service.dart';
+import 'package:harrowsithivinayagar/utils/firebase/analytics_service.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'event_service.dart';
-import 'event_model.dart';
+import '../../utils/firebase/event_service.dart';
+import '../../models/event_model.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});

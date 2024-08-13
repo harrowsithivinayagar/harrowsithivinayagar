@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'dart:io';
 import 'package:newrelic_mobile/config.dart';
 

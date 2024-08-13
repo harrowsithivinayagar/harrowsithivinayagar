@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:newrelic_mobile/newrelic_mobile.dart';
 
 class LoggingService {

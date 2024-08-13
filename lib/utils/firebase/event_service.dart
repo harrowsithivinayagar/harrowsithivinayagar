@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:harrowsithivinayagar/local_notifications.dart';
+import 'package:harrowsithivinayagar/utils/notifications/local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // ignore: depend_on_referenced_packages
-import 'package:timezone/timezone.dart' as tz;
-import 'event_model.dart';
-import 'main.dart';
+import '../../models/event_model.dart';
 
 class EventService {
   static final EventService _instance = EventService._internal();

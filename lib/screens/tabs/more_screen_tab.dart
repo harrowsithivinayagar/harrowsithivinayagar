@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:harrowsithivinayagar/carrerScreen.dart';
-import 'package:harrowsithivinayagar/communityScreen.dart';
-import 'package:harrowsithivinayagar/contactUsScreen.dart';
-import 'package:harrowsithivinayagar/galleryScreen.dart';
-import 'package:harrowsithivinayagar/historyScreen.dart';
-import 'package:harrowsithivinayagar/trusteeScreen.dart';
+import 'package:harrowsithivinayagar/screens/more/carrer_screen.dart';
+import 'package:harrowsithivinayagar/screens/more/community_screen.dart';
+import 'package:harrowsithivinayagar/screens/more/contact_us_screen.dart';
+import 'package:harrowsithivinayagar/screens/more/gallery_screen.dart';
+import 'package:harrowsithivinayagar/screens/more/history_screen.dart';
+import 'package:harrowsithivinayagar/screens/more/trustee_screen.dart';
 
 class MoreTab extends StatelessWidget {
   const MoreTab({super.key});

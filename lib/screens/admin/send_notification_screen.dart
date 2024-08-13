@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:harrowsithivinayagar/utils/logging/logging_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:harrowsithivinayagar/loggingService.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
 
 class SendNotificationScreen extends StatefulWidget {

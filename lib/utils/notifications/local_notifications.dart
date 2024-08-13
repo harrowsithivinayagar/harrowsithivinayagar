@@ -1,6 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:harrowsithivinayagar/event_model.dart';
-// ignore: depend_on_referenced_packages
+import 'package:harrowsithivinayagar/models/event_model.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 

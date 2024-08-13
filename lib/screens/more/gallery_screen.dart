@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:harrowsithivinayagar/fullScreenImage.dart';
+import 'package:harrowsithivinayagar/screens/more/full_screen_image.dart';
 
 class GalleryScreen extends StatelessWidget {
   final List<String> imageUrls = [
@@ -53,7 +53,7 @@ class GalleryScreen extends StatelessWidget {
                     tag: imageUrl,
                     child: CachedNetworkImage(
                       imageUrl: imageUrl,
-                      placeholder: (context, url) => Center(
+                      placeholder: (context, url) => const Center(
                         child: CircularProgressIndicator(),
                       ),
                       errorWidget: (context, url, error) => Icon(Icons.error),

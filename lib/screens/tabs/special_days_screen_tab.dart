@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'event_service.dart';
-import 'event_model.dart';
+import '../../utils/firebase/event_service.dart';
+import '../../models/event_model.dart';
 
 class SpecialDaysTab extends StatefulWidget {
   const SpecialDaysTab({super.key});

@@ -31,9 +31,6 @@ class SpecialDaysTab extends StatelessWidget {
                   },
                   startingDayOfWeek: StartingDayOfWeek.monday,
                   onPageChanged: (focusedDay) {
-                    print("Called");
-                    print(focusedDay);
-
                     context
                         .read<SpecialDaysScreenBloc>()
                         .add(ChangeFocusDayEvent(focusedDay));

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harrowsithivinayagar/bloc/show_users/show_users_bloc.dart';
+import 'package:harrowsithivinayagar/bloc/show_users/show_users_event.dart';
+import 'package:harrowsithivinayagar/bloc/show_users/show_users_state.dart';
 
 class ShowUsersScreen extends StatefulWidget {
   const ShowUsersScreen({super.key});
@@ -10,8 +13,16 @@ class ShowUsersScreen extends StatefulWidget {
 }
 
 class _ShowUsersScreenState extends State<ShowUsersScreen> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String _selectedSegment = 'Users'; // Initial segment
+  String _selectedSegment = 'Users';
+
+  @override
+  void initState() {
+    super.initState();
+    // Triggering the initial event to fetch users
+    context
+        .read<ShowUsersBloc>()
+        .add(FetchUsersByRole(_selectedSegment == 'Users' ? 'user' : 'admin'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +33,13 @@ class _ShowUsersScreenState extends State<ShowUsersScreen> {
       ),
       body: Column(
         children: [
-          const SizedBox(
-              height: 16), // Add space between AppBar and SegmentedButton
+          const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors
-                    .orange[100], // Background color for the segment control
-                borderRadius: BorderRadius.circular(30.0), // Rounded corners
+                color: Colors.orange[100],
+                borderRadius: BorderRadius.circular(30.0),
               ),
               child: SegmentedButton<String>(
                 segments: const [
@@ -48,16 +57,20 @@ class _ShowUsersScreenState extends State<ShowUsersScreen> {
                   setState(() {
                     _selectedSegment = newSelection.first;
                   });
+                  context.read<ShowUsersBloc>().add(
+                        FetchUsersByRole(
+                            _selectedSegment == 'Users' ? 'user' : 'admin'),
+                      );
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith((states) {
-                    if (states.contains(MaterialState.selected)) {
+                  backgroundColor: WidgetStateProperty.resolveWith((states) {
+                    if (states.contains(WidgetState.selected)) {
                       return Colors.orange;
                     }
                     return Colors.transparent;
                   }),
-                  foregroundColor: MaterialStateProperty.resolveWith((states) {
-                    if (states.contains(MaterialState.selected)) {
+                  foregroundColor: WidgetStateProperty.resolveWith((states) {
+                    if (states.contains(WidgetState.selected)) {
                       return Colors.white;
                     }
                     return Colors.orange;
@@ -66,76 +79,50 @@ class _ShowUsersScreenState extends State<ShowUsersScreen> {
               ),
             ),
           ),
-          const SizedBox(
-              height: 16), // Add space between SegmentedButton and content
+          const SizedBox(height: 16),
           Expanded(
-            child: _selectedSegment == 'Users'
-                ? _buildUserList('user')
-                : _buildUserList('admin'),
+            child: BlocBuilder<ShowUsersBloc, ShowUsersState>(
+              builder: (context, state) {
+                if (state is ShowUsersLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is ShowUsersError) {
+                  return Center(child: Text(state.error));
+                } else if (state is ShowUsersLoaded) {
+                  return ListView.builder(
+                    itemCount: state.users.length,
+                    itemBuilder: (context, index) {
+                      final user = state.users[index];
+                      return ListTile(
+                        title: Text(user.email),
+                        subtitle: Text('Role: ${user.role}'),
+                        trailing: DropdownButton<String>(
+                          value: user.role,
+                          items: ['user', 'admin']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newRole) {
+                            if (newRole != null && newRole != user.role) {
+                              context
+                                  .read<ShowUsersBloc>()
+                                  .add(UpdateUserRole(user.id, newRole));
+                            }
+                          },
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(child: Text('No users found'));
+                }
+              },
+            ),
           ),
         ],
       ),
     );
-  }
-
-  Widget _buildUserList(String role) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _firestore
-          .collection('users')
-          .where('role', isEqualTo: role)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final users = snapshot.data!.docs;
-
-        return ListView.builder(
-          itemCount: users.length,
-          itemBuilder: (context, index) {
-            final user = users[index];
-            final userEmail = user['email'];
-            final userRole = user['role'];
-
-            return ListTile(
-              title: Text(userEmail),
-              subtitle: Text('Role: $userRole'),
-              trailing: DropdownButton<String>(
-                value: userRole,
-                items: ['user', 'admin']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (String? newRole) {
-                  if (newRole != null && newRole != userRole) {
-                    _updateUserRole(user.id, newRole);
-                  }
-                },
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Future<void> _updateUserRole(String userId, String newRole) async {
-    try {
-      await _firestore
-          .collection('users')
-          .doc(userId)
-          .update({'role': newRole});
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Role updated to $newRole')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update role: $e')),
-      );
-    }
   }
 }

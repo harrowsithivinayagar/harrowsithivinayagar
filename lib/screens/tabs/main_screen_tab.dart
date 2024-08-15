@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/main/main_screen_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:harrowsithivinayagar/screens/tabs/special_days_screen_tab.dart';
 import 'package:harrowsithivinayagar/screens/tabs/admin_screen_tab.dart';
 import 'package:harrowsithivinayagar/screens/tabs/home_screen_tab.dart';
 import 'package:harrowsithivinayagar/screens/tabs/more_screen_tab.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainScreen extends StatefulWidget {

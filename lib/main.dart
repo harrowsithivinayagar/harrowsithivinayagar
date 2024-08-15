@@ -8,8 +8,10 @@ import 'package:harrowsithivinayagar/bloc/login/login_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/main/main_screen_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/onboarding_screen/onboarding_screen_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/send_notification/send_notification_screen_bloc.dart';
+import 'package:harrowsithivinayagar/bloc/show_users/show_users_bloc.dart';
 import 'package:harrowsithivinayagar/repository/login/login_repository.dart';
 import 'package:harrowsithivinayagar/repository/send_notification/send_notification_repository.dart';
+import 'package:harrowsithivinayagar/repository/show_users/show_users_repository.dart';
 import 'package:harrowsithivinayagar/routes/routes.dart';
 import 'package:harrowsithivinayagar/utils/logging/logging_service.dart';
 import 'package:harrowsithivinayagar/utils/notifications/local_notifications.dart';
@@ -63,6 +65,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final authRepository = LoginRepository();
     final sendNotificationRepository = SendNotificationRepository();
+    final userRepository = UserRepository();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -80,6 +83,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               SendNotificationScreenBloc(sendNotificationRepository),
+        ),
+        BlocProvider(
+          create: (context) => ShowUsersBloc(userRepository),
         ),
       ],
       child: MaterialApp(

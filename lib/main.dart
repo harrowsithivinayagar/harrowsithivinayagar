@@ -7,7 +7,9 @@ import 'package:harrowsithivinayagar/bloc/initial/initial_screen_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/login/login_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/main/main_screen_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/onboarding_screen/onboarding_screen_bloc.dart';
+import 'package:harrowsithivinayagar/bloc/send_notification/send_notification_screen_bloc.dart';
 import 'package:harrowsithivinayagar/repository/login/login_repository.dart';
+import 'package:harrowsithivinayagar/repository/send_notification/send_notification_repository.dart';
 import 'package:harrowsithivinayagar/routes/routes.dart';
 import 'package:harrowsithivinayagar/utils/logging/logging_service.dart';
 import 'package:harrowsithivinayagar/utils/notifications/local_notifications.dart';
@@ -60,6 +62,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authRepository = LoginRepository();
+    final sendNotificationRepository = SendNotificationRepository();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -73,6 +76,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => OnboardingScreenBloc(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SendNotificationScreenBloc(sendNotificationRepository),
         ),
       ],
       child: MaterialApp(

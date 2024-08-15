@@ -61,4 +61,10 @@ class LoginRepository {
     DocumentSnapshot userDoc = await userDocRef.get();
     return userDoc.get('role');
   }
+
+  Future<void> signoutUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await FirebaseAuth.instance.signOut();
+    await prefs.remove('role');
+  }
 }

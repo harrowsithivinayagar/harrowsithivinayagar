@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/main/main_screen_bloc.dart';
@@ -76,6 +77,12 @@ class _MainScreenState extends State<MainScreen> {
         if (state is MainScreenUpdateRequired) {
           _showUpdateDialog();
         }
+
+        if (state is MainScreenLogout) {
+          if (context.mounted) {
+            Navigator.pushReplacementNamed(context, '/login');
+          }
+        }
       },
       builder: (context, state) {
         if (state is MainScreenLoading) {
@@ -107,12 +114,7 @@ class _MainScreenState extends State<MainScreen> {
                     color: Colors.white,
                   ),
                   onPressed: () async {
-                    final SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    await prefs.remove('role');
-                    if (context.mounted) {
-                      Navigator.pushReplacementNamed(context, '/login');
-                    }
+                    context.read<MainScreenBloc>().add(LogoutEvent());
                   },
                 ),
               ],

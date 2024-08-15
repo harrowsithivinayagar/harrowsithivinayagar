@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/initial/initial_screen_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/login/login_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/main/main_screen_bloc.dart';
+import 'package:harrowsithivinayagar/bloc/onboarding_screen/onboarding_screen_bloc.dart';
 import 'package:harrowsithivinayagar/repository/login/login_repository.dart';
 import 'package:harrowsithivinayagar/routes/routes.dart';
 import 'package:harrowsithivinayagar/utils/logging/logging_service.dart';
@@ -62,13 +63,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => MainScreenBloc(),
+          create: (context) => MainScreenBloc(authRepository),
         ),
         BlocProvider(
           create: (context) => InitialScreenBloc(),
         ),
         BlocProvider(
           create: (context) => LoginBloc(authRepository),
+        ),
+        BlocProvider(
+          create: (context) => OnboardingScreenBloc(),
         ),
       ],
       child: MaterialApp(

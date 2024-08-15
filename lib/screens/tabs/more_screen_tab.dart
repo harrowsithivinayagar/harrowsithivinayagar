@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harrowsithivinayagar/bloc/bloc/more_screen_bloc.dart';
+import 'package:harrowsithivinayagar/bloc/more/more_screen_bloc.dart';
 
 class MoreTab extends StatelessWidget {
   const MoreTab({super.key});

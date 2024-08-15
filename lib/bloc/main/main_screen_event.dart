@@ -8,3 +8,8 @@ abstract class MainScreenEvent extends Equatable {
 }
 
 class InitializeMainScreen extends MainScreenEvent {}
+
+class LogoutEvent extends MainScreenEvent {
+  @override
+  List<Object> get props => [];
+}

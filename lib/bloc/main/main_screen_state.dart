@@ -22,6 +22,8 @@ class MainScreenLoaded extends MainScreenState {
 
 class MainScreenUpdateRequired extends MainScreenState {}
 
+class MainScreenLogout extends MainScreenState {}
+
 class MainScreenError extends MainScreenState {
   final String message;
 

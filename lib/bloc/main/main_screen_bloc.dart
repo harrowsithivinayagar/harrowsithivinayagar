@@ -1,14 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harrowsithivinayagar/bloc/main/main_screen_event.dart';
 import 'package:harrowsithivinayagar/bloc/main/main_screen_state.dart';
+import 'package:harrowsithivinayagar/repository/login/login_repository.dart';
 import 'package:harrowsithivinayagar/utils/firebase/remote_config_service.dart';
 import 'package:harrowsithivinayagar/utils/logging/logging_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class MainScreenBloc extends Bloc<MainScreenEvent, MainScreenState> {
-  MainScreenBloc() : super(MainScreenInitial()) {
+  final LoginRepository loginRepo;
+  MainScreenBloc(this.loginRepo) : super(MainScreenInitial()) {
     on<InitializeMainScreen>(_onInitializeMainScreen);
+    on<LogoutEvent>(onlogoutAction);
+  }
+
+  Future<void> onlogoutAction(
+    LogoutEvent event,
+    Emitter<MainScreenState> emit,
+  ) async {
+    await loginRepo.signoutUser();
+    emit(MainScreenLogout());
   }
 
   Future<void> _onInitializeMainScreen(

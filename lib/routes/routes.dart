@@ -9,7 +9,7 @@ class Routes {
     '/': (context) => const InitialScreen(),
     '/login': (context) => const LoginScreen(),
     '/main': (context) => const MainScreen(),
-    '/onboarding': (context) => const OnboardingScreen(),
+    '/onboarding': (context) => OnboardingScreen(),
     // Add other routes here
   };
 }

@@ -19,7 +19,7 @@ class InitialScreenBloc extends Bloc<InitialScreenEvent, InitialScreenState> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool onboardingComplete = prefs.getBool('onboardingComplete') ?? false;
       bool isLoggedIn = FirebaseAuth.instance.currentUser != null;
-
+      print("isLoggedIn $isLoggedIn");
       emit(InitialScreenLoaded(
         onboardingComplete: onboardingComplete,
         isLoggedIn: isLoggedIn,
